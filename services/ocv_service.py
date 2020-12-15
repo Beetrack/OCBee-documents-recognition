@@ -134,3 +134,25 @@ class OCVService:
         image_out = self._combine_block_image_process(image_in, mask, 20)
         image_out = self._combine_postprocess(image_out)
         return image_out
+
+    def process(self, img_name, gamma=1, block_size=80, delta=50) -> str:
+        """Processes the image with an 'adaptive binarization' to extract the text in it
+
+        Args:
+            img_name (str): The name of the image containing the file
+            gamma (float):  Gamma correction to be applied to the image
+            block_size (int): Size of blocks to divide the image with. The trick is to choose its size
+                              large enough so that you still get a large chunk of text and background
+                              (i.e. larger than any symbols that you have), but small enough to not suffer
+                              from any lightening condition variations (i.e. 'large, but still local')
+            delta (int): Threshold of 'how far away from median we will still consider it as background?'
+
+        Returns:
+            string: a string of the processed text and what it is being identified in the image
+        """
+        img = cv2.imread(img_name)
+        mask = self.adjust_gamma(img, gamma=gamma)
+        mask = self.process_image(mask, block_size=block_size, delta=delta)
+        new_img = self.combine_process(img, mask)
+
+        return pytesseract.image_to_string(new_img)
