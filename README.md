@@ -12,37 +12,45 @@ Flask API for text recognition of documents with [OpenCV](https://opencv.org/) a
 
 ![black and white](img/b&n.png)
 
+What OpenCV interprets:
 ```
-SUN 12.749.625-K
+SANS Mem REPUBLICA DE CHILE i
 
-REPUBLICA DE CHILE i,
-toe re ale
+   
 
-wR
+preuibos WT
+FREDEZ
 
-aes
-VEDAL
+VIDAL
 
-MARCEI & CAROLINA
+MARCELA CAROLINA
 
-Crna oF ( \
-pe tata Te
+CHILENA F
 
-  
+24 FEB 1982 1909009001 FANE
 
-tall BO
-
-2:
+1 SEP 2013, 10 AGO 2623
 
  
 
-WAG
+   
+
+re
+
+is
+
+ 
+
+RUN 12.749.625-K
+
+a
 ```
 
 ### Adaptive binarization
 
 ![black and white](img/proc.png)
 
+What OpenCV interprets:
 ```
 CEDULA DE REPUBLICA DE CHILE
 
