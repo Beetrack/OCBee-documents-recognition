@@ -54,6 +54,12 @@ class OCVService:
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
 
+    @OCVServiceWrappers.type_error_wrapper([
+        ('image', type(np.ndarray)), ('gamma', (int, float))
+    ])
+    @OCVServiceWrappers.value_error_wrapper([
+        ('gamma', 0)
+    ])
     def adjust_gamma(self, image, gamma=1):
         """Builds a lookup table mapping the pixel values [0, 255] to their adjusted gamma values. Returns cv2 image"""
         inv_gamma = 1.0 / gamma
@@ -97,6 +103,12 @@ class OCVService:
                 out_image[tuple(block_idx)] = self._adaptive_median_threshold(image[tuple(block_idx)], delta)
         return out_image
 
+    @OCVServiceWrappers.type_error_wrapper([
+        ('image', type(np.ndarray)), ('block_size', int), ('delta', (int, float))
+    ])
+    @OCVServiceWrappers.value_error_wrapper([
+        ('block_size', 0), ('delta', 0)
+    ])
     def process_image(self, img, block_size=80, delta=50):
         """Pipeline of segmenting into regions. Returns a cv2 image"""
         image_in = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
@@ -165,13 +177,22 @@ class OCVService:
     def _combine_postprocess(self, image):
         return image
 
-    def combine_process(self, img, mask):
+    @OCVServiceWrappers.type_error_wrapper([
+        ('image', type(np.ndarray)), ('mask', type(np.ndarray))
+    ])
+    def combine_process(self, image, mask):
         """Executes whole pipeline and returns a mask for the original image. Returns cv2 image"""
-        image_in = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+        image_in = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
         image_out = self._combine_block_image_process(image_in, mask, 20)
         image_out = self._combine_postprocess(image_out)
         return image_out
 
+    @OCVServiceWrappers.type_error_wrapper([
+        ('img_name', str), ('gamma', (int, float)), ('block_size', int), ('delta', (int, float))
+    ])
+    @OCVServiceWrappers.value_error_wrapper([
+        ('gamma', 0), ('block_size', 0), ('delta', 0)
+    ])
     def process(self, img_name, gamma=1, block_size=80, delta=50) -> str:
         """Processes the image with an 'adaptive binarization' to extract the text in it
 
