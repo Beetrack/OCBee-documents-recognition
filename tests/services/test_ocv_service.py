@@ -76,3 +76,40 @@ class OCVServiceTest(unittest.TestCase):
         # mask type must be ndarray
         self.assertRaises(TypeError, self.service.combine_process, self.img, '')
 
+    def test_process_return_type(self):
+        # must return correct type
+        self.assertTrue(type(self.service.process(self.img_dir)) is str)
+        self.assertTrue(type(self.service.process(self.img_dir, block_size=15)) is str)
+        self.assertTrue(type(self.service.process(self.img_dir, delta=10)) is str)
+        self.assertTrue(type(self.service.process(self.img_dir, gamma=15.1)) is str)
+        self.assertTrue(type(self.service.process(self.img_dir, block_size=15, delta=10, gamma=200)) is str)
+
+    def test_process_args(self):
+        # img_name must be string
+        self.assertRaises(SystemError, self.service.process, self.img)
+
+        # img must be a valid directory
+        self.assertRaises(cv2.error, self.service.process, '')
+
+        # block_size must be greater than zero
+        self.assertRaises(ValueError, self.service.process, self.img_dir, block_size=0)
+        self.assertRaises(ValueError, self.service.process, self.img_dir, block_size=-1)
+
+        # block_size must be an integer
+        self.assertRaises(TypeError, self.service.process, self.img_dir, block_size=1.1)
+        self.assertRaises(TypeError, self.service.process, self.img_dir, block_size='')
+
+        # delta amust be greater than zero
+        self.assertRaises(ValueError, self.service.process, self.img_dir, delta=0)
+        self.assertRaises(ValueError, self.service.process, self.img_dir, delta=-1)
+
+        # delta must be float or integer
+        self.assertRaises(TypeError, self.service.process, self.img_dir, delta='')
+
+        # gamma must be greater that zero
+        self.assertRaises(ValueError, self.service.adjust_gamma, self.img, gamma=0)
+        self.assertRaises(ValueError, self.service.adjust_gamma, self.img, gamma=-1)
+        self.assertRaises(ValueError, self.service.adjust_gamma, self.img, gamma=-2.1)
+
+        # gamma can be float or int and nothing else
+        self.assertRaises(TypeError, self.service.adjust_gamma, self.img, gamma='1')
