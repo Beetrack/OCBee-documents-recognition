@@ -21,6 +21,22 @@ class OCVServiceWrappers:
             return __wrapper
         return _wrapper
 
+    @staticmethod
+    def type_error_wrapper(error_keys: list):
+        """Raises exception for value if the item is not of the specified type
+
+        Args:
+             error_keys (list): tuple list (i.e.: [('gamma', 0)])
+        """
+        def _wrapper(func):
+            def __wrapper(self, *args, **kwargs):
+                for key in error_keys:
+                    if key[0] in kwargs.keys() and not isinstance(kwargs[key[0]], key[1]):
+                        raise TypeError(f'{key[0]} must be of type {key[1]}.')
+                return func(self, *args, **kwargs)
+            return __wrapper
+        return _wrapper
+
 
 class OCVService:
     """
