@@ -1,0 +1,34 @@
+from strsimpy.normalized_levenshtein import NormalizedLevenshtein
+import re
+
+
+class CNIService:
+
+    # patterns to make final clean
+    P_RUN = r'\w+\s?([\dK]{8,9})'
+    P_NAC_SEX = r'(\w+)\s([FM])'
+    P_BTH_DOC = r'(\d{2} \w{3} \d{4}) (\d+)'
+    P_GEN_DUE = r'(\d{2} \w{3} \d{4}) (\d{2} \w{3} \d{4})'
+
+    # keys to find and values to skip to get the corresponding
+    # asumes format:
+    # ...
+    # APELLIDOS, APELLIDO 1, APELLIDO 2
+    # ...
+    # NOMBRES, JUAN DE LA ROSA
+    # ...
+    # NACIONALIDAD SEXO, CHILENO M,
+    # ...
+    # FECHA DE NACIMIENTO NUMERO DOCUMENTO, 31 DIC 1997 511408104
+    # ...
+    # FECHA DE EMISION FECHA DE VENCIMIENTO, 13 MAR 2017 31 DIC 2020
+    TO_FIND = {
+        'RUN': 0,
+        'APELLIDOS': 1,
+        'NOMBRES': 1,
+        'NACIONALIDAD SEXO': 1,
+        'NACIONALIDAD': 2,
+        'SEXO': 1,
+        'FECHA DE NACIMIENTO NUMERO DOCUMENTO': 1,
+        'FECHA DE EMISION FECHA DE VENCIMIENTO': 1
+    }
