@@ -48,3 +48,19 @@ class CNIService:
     def _valid_similarity(self, find: str, compare: str, threshold=0.75) -> bool:
         return normalized_levenshtein.similarity(find, compare) >= threshold
 
+    def _associate(self, text_list: list, threshold=0.75) -> dict:
+        association = {txt: None for txt in self.TO_FIND}
+
+        for finding in self.TO_FIND.keys():
+            for j, text in enumerate(text_list):
+                # RUN is read in different way
+                if self._valid_similarity(finding, text):
+                    if finding == 'APELLIDOS':
+                        association['APELLIDOS'] = text_list[j+1] + ' ' + text_list[j+2]
+                    else:
+                        association[finding] = text_list[j + self.TO_FIND[finding]]
+
+                elif re.match(self.P_RUN, text):
+                    association['RUN'] = text
+
+        return association
