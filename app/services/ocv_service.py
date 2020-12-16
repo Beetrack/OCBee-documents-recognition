@@ -3,7 +3,7 @@ import pytesseract
 import numpy as np
 
 
-class OCVServiceWrapper:
+class OCVServiceWrappers:
 
     @staticmethod
     def value_error_wrapper(error_keys: list):
