@@ -3,6 +3,25 @@ import pytesseract
 import numpy as np
 
 
+class OCVServiceWrapper:
+
+    @staticmethod
+    def value_error_wrapper(error_keys: list):
+        """Raises exception for value if the item does not have the min value expected
+
+        Args:
+             error_keys (list): tuple list (i.e.: [('gamma', 0, 'Error specification')])
+        """
+        def _wrapper(func):
+            def __wrapper(self, *args, **kwargs):
+                for key in error_keys:
+                    if key[0] in kwargs.keys() and kwargs[key[0]] <= key[1]:
+                        raise ValueError(key[2])
+                return func(self, *args, **kwargs)
+            return __wrapper
+        return _wrapper
+
+
 class OCVService:
     """
     A class service to wrap a Open Computer Vision with Tesseract to analyze the text of images
