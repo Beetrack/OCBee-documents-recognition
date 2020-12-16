@@ -1,6 +1,6 @@
 import cv2
 import pytesseract
-import nunmpy as np
+import numpy as np
 
 
 class OCVService:
@@ -16,11 +16,13 @@ class OCVService:
         process(img_name, gamma=1, block_size=80, delta=50): Processes the image with an 'adaptive binarization'
     """
 
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
     def adjust_gamma(self, image, gamma=1):
         """Builds a lookup table mapping the pixel values [0, 255] to their adjusted gamma values. Returns cv2 image"""
         inv_gamma = 1.0 / gamma
         table = np.array([((i / 255.0) ** inv_gamma) * 255 for i in np.arange(0, 256)]).astype("uint8")
-
         return cv2.LUT(image, table)
 
     def _preprocess(self, image):
@@ -57,7 +59,7 @@ class OCVService:
             for col in range(0, image.shape[1], block_size):
                 idx = (row, col)
                 block_idx = self._get_block_index(image.shape, idx, block_size)
-                out_image[block_idx] = self._adaptive_median_threshold(image[block_idx], delta)
+                out_image[tuple(block_idx)] = self._adaptive_median_threshold(image[tuple(block_idx)], delta)
         return out_image
 
     def process_image(self, img, block_size=80, delta=50):
@@ -122,7 +124,7 @@ class OCVService:
             for col in range(0, image.shape[1], block_size):
                 idx = (row, col)
                 block_idx = self._get_block_index(image.shape, idx, block_size)
-                out_image[block_idx] = self._combine_block(image[block_idx], mask[block_idx])
+                out_image[tuple(block_idx)] = self._combine_block(image[tuple(block_idx)], mask[tuple(block_idx)])
         return out_image
 
     def _combine_postprocess(self, image):
@@ -150,6 +152,7 @@ class OCVService:
         Returns:
             string: a string of the processed text and what it is being identified in the image
         """
+
         img = cv2.imread(img_name)
         mask = self.adjust_gamma(img, gamma=gamma)
         mask = self.process_image(mask, block_size=block_size, delta=delta)
