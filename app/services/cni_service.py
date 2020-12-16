@@ -64,3 +64,35 @@ class CNIService:
                     association['RUN'] = text
 
         return association
+
+    def _valid_association(self, associations: dict) -> bool:
+        def valid_run(associations):
+            run = associations['RUN']
+            return bool(run) and re.match(self.P_RUN, run)
+
+        def valid_lastname(associations):
+            return bool(associations['APELLIDOS'])
+
+        def valid_name(associations):
+            return bool(associations['NOMBRES'])
+
+        def valid_nationality_sex(associations):
+            return bool(associations['NACIONALIDAD SEXO'] or (associations['NACIONALIDAD'] and associations['SEXO']))
+        
+        def valid_birth_doc(associations):
+            birth_doc = associations['FECHA DE NACIMIENTO NUMERO DOCUMENTO']
+            return bool(birth_doc) and re.match(self.P_BTH_DOC, birth_doc)
+        
+        def valid_generated_due(associations):
+            generated_due = associations['FECHA DE EMISION FECHA DE VENCIMIENTO']
+            return bool(generated_due) and re.match(self.P_GEN_DUE, generated_due)
+
+        return all([
+            valid_run(associations) and
+            valid_lastname(associations) and
+            valid_name(associations) and
+            valid_nationality_sex(associations) and
+            valid_birth_doc(associations) and
+            valid_generated_due(associations)
+        ])
+
