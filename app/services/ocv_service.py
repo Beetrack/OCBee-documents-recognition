@@ -10,13 +10,13 @@ class OCVServiceWrapper:
         """Raises exception for value if the item does not have the min value expected
 
         Args:
-             error_keys (list): tuple list (i.e.: [('gamma', 0, 'Error specification')])
+             error_keys (list): tuple list (i.e.: [('gamma', 0)])
         """
         def _wrapper(func):
             def __wrapper(self, *args, **kwargs):
                 for key in error_keys:
                     if key[0] in kwargs.keys() and kwargs[key[0]] <= key[1]:
-                        raise ValueError(key[2])
+                        raise ValueError(f'{key[0]} must be greater than {key[1]}.')
                 return func(self, *args, **kwargs)
             return __wrapper
         return _wrapper
