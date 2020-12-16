@@ -96,3 +96,41 @@ class CNIService:
             valid_generated_due(associations)
         ])
 
+    def _clean_processed_text(self, associations: dict) -> dict:
+        def clean_nac_sex(associations):
+            if 'NACIONALIDAD' in associations.keys():
+                nac, sex = re.match(self.P_NAC_SEX, associations['NACIONALIDAD']).groups()
+
+            elif 'NACIONALIDAD SEXO' in associations.keys():
+                nac, sex = re.match(self.P_NAC_SEX, associations['NACIONALIDAD SEXO']).groups()
+                del associations['NACIONALIDAD SEXO']
+
+            associations['NACIONALIDAD'] = nac
+            associations['SEXO'] = sex
+            return associations
+
+        def clean_run(associations: dict) -> dict:
+            associations['RUN'] = re.match(self.P_RUN, associations['RUN']).groups()[0]
+            return associations
+
+        def clean_birth_doc(associations: dict) -> dict:
+            birth, doc = re.match(self.P_BTH_DOC, associations['FECHA DE NACIMIENTO NUMERO DOCUMENTO']).groups()
+            associations['FECHA DE NACIMIENTO'] = birth
+            associations['NUMERO DOCUMENTO'] = doc
+            del associations['FECHA DE NACIMIENTO NUMERO DOCUMENTO']
+            return associations
+
+        def clean_generated_due(associations: dict) -> dict:
+            generated, due = re.match(self.P_GEN_DUE, associations['FECHA DE EMISION FECHA DE VENCIMIENTO']).groups()
+            associations['FECHA DE NACIMIENTO'] = generated
+            associations['NUMERO DOCUMENTO'] = due
+            del associations['FECHA DE EMISION FECHA DE VENCIMIENTO']
+            return associations
+
+        associations = dict(filter(lambda item: bool(item[1]), associations.items()))
+        associations = clean_nac_sex(associations)
+        associations = clean_run(associations)
+        associations = clean_birth_doc(associations)
+        associations = clean_generated_due(associations)
+        return associations
+
