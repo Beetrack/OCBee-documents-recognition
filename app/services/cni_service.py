@@ -32,3 +32,19 @@ class CNIService:
         'FECHA DE NACIMIENTO NUMERO DOCUMENTO': 1,
         'FECHA DE EMISION FECHA DE VENCIMIENTO': 1
     }
+
+    def cleaner(self, text: str) -> list:
+        # normalize spaces and removes non standar characters
+        text = re.sub(r'\s{2,}|[^\w\\\s.-]', '\n', text).upper()
+
+        # removes unnecessary \ or other characters excepting \n
+        text = re.sub(r'[^a-zA-Z0-9\s]', '', text)
+
+        # split based on enter and filter of white spaces
+        text_lines = map(lambda txt: txt.strip(), text.split('\n'))
+        text_lines = list(filter(lambda txt: (txt != '') or (not re.match(r'\s*', txt)), text_lines))
+        return text_lines
+
+    def _valid_similarity(self, find: str, compare: str, threshold=0.75) -> bool:
+        return normalized_levenshtein.similarity(find, compare) >= threshold
+
