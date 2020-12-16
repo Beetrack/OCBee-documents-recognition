@@ -35,3 +35,44 @@ class OCVServiceTest(unittest.TestCase):
         # gamma can be float or int and nothing else
         self.assertRaises(TypeError, self.service.adjust_gamma, self.img, gamma='1')
 
+    def test_process_image_return_type(self):
+        # must return correctly with all of this cases
+        self.assertTrue(type(self.service.process_image(self.img)) is ndarray)
+        self.assertTrue(type(self.service.process_image(self.img, block_size=10)) is ndarray)
+        self.assertTrue(type(self.service.process_image(self.img, delta=1)) is ndarray)
+        self.assertTrue(type(self.service.process_image(self.img, delta=1.1)) is ndarray)
+        self.assertTrue(type(self.service.process_image(self.img, block_size=15, delta=1.1)) is ndarray)
+
+    def test_process_image_args(self):
+        # img type must be ndarray
+        self.assertRaises(TypeError, self.service.process_image, '')
+
+        # block_size must be greater than zero
+        self.assertRaises(ValueError, self.service.process_image, self.img, block_size=0)
+        self.assertRaises(ValueError, self.service.process_image, self.img, block_size=-1)
+
+        # block_size must be an integer
+        self.assertRaises(TypeError, self.service.process_image, self.img, block_size=1.1)
+        self.assertRaises(TypeError, self.service.process_image, self.img, block_size='')
+
+        # delta amust be greater than zero
+        self.assertRaises(ValueError, self.service.process_image, self.img, delta=0)
+        self.assertRaises(ValueError, self.service.process_image, self.img, delta=-1)
+
+        # delta must be float or integer
+        self.assertRaises(TypeError, self.service.process_image, self.img, delta='')
+
+    def test_combine_process_return_type(self):
+        mask = self.service.adjust_gamma(self.img)
+        mask = self.service.process_image(mask)
+
+        # must return correct type
+        self.assertTrue(type(self.service.combine_process(self.img, mask)) is ndarray)
+
+    def test_combine_process_args(self):
+        # img type must be ndarray
+        self.assertRaises(TypeError, self.service.combine_process, '', self.img)
+
+        # mask type must be ndarray
+        self.assertRaises(TypeError, self.service.combine_process, self.img, '')
+
