@@ -134,3 +134,14 @@ class CNIService:
         associations = clean_generated_due(associations)
         return associations
 
+    def valid_text(self, text: str, threshold=0.75) -> bool:
+        text_lines = self.cleaner(text)
+        associations = self._associate(text_lines, threshold=threshold)
+        return self._valid_association(associations)
+
+    def process_text(self, text: str, threshold=0.75) -> dict:
+        text_lines = self.cleaner(text)
+        associations = self._associate(text_lines, threshold=threshold)
+        if self._valid_association(associations):
+            return self._clean_processed_text(associations)
+        return None
