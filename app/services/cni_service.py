@@ -87,14 +87,14 @@ class CNIService:
             generated_due = associations['FECHA DE EMISION FECHA DE VENCIMIENTO']
             return bool(generated_due) and re.match(self.P_GEN_DUE, generated_due)
 
-        return all([
-            valid_run(associations) and
-            valid_lastname(associations) and
-            valid_name(associations) and
-            valid_nationality_sex(associations) and
-            valid_birth_doc(associations) and
+        return all((
+            valid_run(associations),
+            valid_lastname(associations),
+            valid_name(associations),
+            valid_nationality_sex(associations),
+            valid_birth_doc(associations),
             valid_generated_due(associations)
-        ])
+        ))
 
     def _clean_processed_text(self, associations: dict) -> dict:
         def clean_nac_sex(associations):
