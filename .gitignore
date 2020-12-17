@@ -131,3 +131,6 @@ dmypy.json
 
 # Developer settings
 .vscode
+
+# files
+uploads/
