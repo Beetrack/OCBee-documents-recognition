@@ -121,9 +121,8 @@ class CNIService:
             return associations
 
         def clean_generated_due(associations: dict) -> dict:
-            generated, due = re.match(self.P_GEN_DUE, associations['FECHA DE EMISION FECHA DE VENCIMIENTO']).groups()
-            associations['FECHA DE NACIMIENTO'] = generated
-            associations['NUMERO DOCUMENTO'] = due
+            associations['FECHA DE EMISION'] = generated
+            associations['FECHA DE VENCIMIENTO'] = due
             del associations['FECHA DE EMISION FECHA DE VENCIMIENTO']
             return associations
 
