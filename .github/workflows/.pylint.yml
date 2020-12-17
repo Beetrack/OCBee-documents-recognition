@@ -22,7 +22,7 @@ jobs:
         
     - name: Install requirements
       run: |
-        pip install --upgrade --upgrade-strategy eager -r requirements.txt -e .
+        pip install requirements.txt .
     - name: Analysing the code with pylint
       run: |
         pylint app/ `ls -R|grep .py$|xargs`
