@@ -2,6 +2,13 @@
 
 Flask API for text recognition of documents with [OpenCV](https://opencv.org/) and [Tesseract OCR](https://github.com/tesseract-ocr/tesseract) with [Robust Locally-Adaptive Soft Binarization](https://stackoverflow.com/a/57103789) for better performance in detecting the text.
 
+## Config
+
+To configure the API you have to execute the following command
+```sh
+python3 setup.py develop
+```
+
 ## Testing
 
 To run the tests you have to execute the following command
