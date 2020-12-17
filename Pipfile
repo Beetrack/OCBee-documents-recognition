@@ -13,6 +13,10 @@ pytesseract = "*"
 strsimpy = "*"
 pytest = "*"
 pytest-cov = "*"
+werkzeug = "*"
+install = "*"
+flask-api = "*"
+flask = "*"
 
 [requires]
 python_version = "3.8"
