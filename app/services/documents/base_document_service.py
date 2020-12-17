@@ -6,7 +6,7 @@ from strsimpy.normalized_levenshtein import NormalizedLevenshtein
 class BaseDocumentService:
     """
     A base class for common usage among the different supported documents with a common pipeline,
-    which is cleaner, valid_text and process_text
+    which is `cleaner`, `valid_text` and `process_text`
     """
 
     # similarity method
