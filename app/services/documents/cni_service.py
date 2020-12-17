@@ -2,7 +2,7 @@
 import re
 
 # own dependencies
-from base_document_service import BaseDocumentService
+from app.services.documents.base_document_service import BaseDocumentService
 
 
 class CNIService(BaseDocumentService):
