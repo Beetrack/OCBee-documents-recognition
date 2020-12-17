@@ -44,7 +44,7 @@ class CNIService(BaseDocumentService):
         for finding in self.TO_FIND.keys():
             for j, text in enumerate(text_list):
                 # RUN is read in different way
-                if self._valid_similarity(finding, text):
+                if self._valid_similarity(finding, text, threshold=threshold):
                     if finding == 'APELLIDOS':
                         association['APELLIDOS'] = text_list[j+1] + ' ' + text_list[j+2]
                     else:
