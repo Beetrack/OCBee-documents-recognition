@@ -38,18 +38,6 @@ class CNIService(BaseDocumentService):
         'FECHA DE EMISION FECHA DE VENCIMIENTO': 1
     }
 
-    def cleaner(self, text: str) -> list:
-        # normalize spaces and removes non standar characters
-        text = re.sub(r'\s{2,}|[^\w\\\s.-]', '\n', text).upper()
-
-        # removes unnecessary \ or other characters excepting \n
-        text = re.sub(r'[^a-zA-Z0-9\s.-]', '', text)
-
-        # split based on enter and filter of white spaces
-        text_lines = map(lambda txt: txt.strip(), text.split('\n'))
-        text_lines = list(filter(lambda txt: (txt != '') or (not re.match(r'\s*', txt)), text_lines))
-        return text_lines
-
     def _associate(self, text_list: list, threshold=0.75) -> dict:
         association = {txt: None for txt in self.TO_FIND}
 

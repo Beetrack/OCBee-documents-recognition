@@ -25,7 +25,7 @@ class BaseDocumentService:
         text = re.sub(r'\s{2,}|[^\w\\\s.-]', '\n', text).upper()
 
         # removes unnecessary \ or other characters excepting \n
-        text = re.sub(r'[^a-zA-Z0-9\s]', '', text)
+        text = re.sub(r'[^a-zA-Z0-9\s.-]', '', text)
 
         # split based on enter and filter of white spaces
         text_lines = map(lambda txt: txt.strip(), text.split('\n'))
