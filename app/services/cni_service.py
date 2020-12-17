@@ -5,10 +5,12 @@ import re
 class CNIService:
 
     # patterns to make final clean
-    P_RUN = r'\w+\s?([\dK]{8,9})'
-    P_NAC_SEX = r'(\w+)\s([FM])'
-    P_BTH_DOC = r'(\d{2} \w{3} \d{4}) (\d+)'
-    P_GEN_DUE = r'(\d{2} \w{3} \d{4}) (\d{2} \w{3} \d{4})'
+    PATTERNS = {
+        'run': r'\w+\s?([\dK.-]{10,12})',
+        'nac_sex': r'(\w+)\s([FM])',
+        'bth_doc': r'(\d{2} \w{3} \d{4}) (\d.+)',
+        'gen_due': r'(\d{2} \w{3} \d{4}) (\d{2} \w{3} \d{4})'
+    }
 
     # keys to find and values to skip to get the corresponding
     # asumes format:
@@ -60,7 +62,7 @@ class CNIService:
                     else:
                         association[finding] = text_list[j + self.TO_FIND[finding]]
 
-                elif re.match(self.P_RUN, text):
+                elif re.match(self.PATTERNS['run'], text):
                     association['RUN'] = text
 
         return association
@@ -68,7 +70,7 @@ class CNIService:
     def _valid_association(self, associations: dict) -> bool:
         def valid_run(associations):
             run = associations['RUN']
-            return bool(run) and re.match(self.P_RUN, run)
+            return bool(run) and re.match(self.PATTERNS['run'], run)
 
         def valid_lastname(associations):
             return bool(associations['APELLIDOS'])
@@ -81,11 +83,11 @@ class CNIService:
         
         def valid_birth_doc(associations):
             birth_doc = associations['FECHA DE NACIMIENTO NUMERO DOCUMENTO']
-            return bool(birth_doc) and re.match(self.P_BTH_DOC, birth_doc)
+            return bool(birth_doc) and re.match(self.PATTERNS['bth_doc'], birth_doc)
         
         def valid_generated_due(associations):
             generated_due = associations['FECHA DE EMISION FECHA DE VENCIMIENTO']
-            return bool(generated_due) and re.match(self.P_GEN_DUE, generated_due)
+            return bool(generated_due) and re.match(self.PATTERNS['gen_due'], generated_due)
 
         return all((
             valid_run(associations),
@@ -99,10 +101,10 @@ class CNIService:
     def _clean_processed_text(self, associations: dict) -> dict:
         def clean_nac_sex(associations):
             if 'NACIONALIDAD' in associations.keys():
-                nac, sex = re.match(self.P_NAC_SEX, associations['NACIONALIDAD']).groups()
+                nac, sex = re.match(self.PATTERNS['nac_sex'], associations['NACIONALIDAD']).groups()
 
             elif 'NACIONALIDAD SEXO' in associations.keys():
-                nac, sex = re.match(self.P_NAC_SEX, associations['NACIONALIDAD SEXO']).groups()
+                nac, sex = re.match(self.PATTERNS['nac_sex'], associations['NACIONALIDAD SEXO']).groups()
                 del associations['NACIONALIDAD SEXO']
 
             associations['NACIONALIDAD'] = nac
@@ -110,17 +112,18 @@ class CNIService:
             return associations
 
         def clean_run(associations: dict) -> dict:
-            associations['RUN'] = re.match(self.P_RUN, associations['RUN']).groups()[0]
+            associations['RUN'] = re.match(self.PATTERNS['run'], associations['RUN']).groups()[0]
             return associations
 
         def clean_birth_doc(associations: dict) -> dict:
-            birth, doc = re.match(self.P_BTH_DOC, associations['FECHA DE NACIMIENTO NUMERO DOCUMENTO']).groups()
+            birth, doc = re.match(self.PATTERNS['bth_doc'], associations['FECHA DE NACIMIENTO NUMERO DOCUMENTO']).groups()
             associations['FECHA DE NACIMIENTO'] = birth
             associations['NUMERO DOCUMENTO'] = doc
             del associations['FECHA DE NACIMIENTO NUMERO DOCUMENTO']
             return associations
 
         def clean_generated_due(associations: dict) -> dict:
+            generated, due = re.match(self.PATTERNS['gen_due'], associations['FECHA DE EMISION FECHA DE VENCIMIENTO']).groups()
             associations['FECHA DE EMISION'] = generated
             associations['FECHA DE VENCIMIENTO'] = due
             del associations['FECHA DE EMISION FECHA DE VENCIMIENTO']
