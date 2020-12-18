@@ -14,9 +14,9 @@ strsimpy = "*"
 pytest = "*"
 pytest-cov = "*"
 werkzeug = "*"
-install = "*"
 flask-api = "*"
 flask = "*"
+python-dotenv = "*"
 
 [requires]
 python_version = "3.8"
