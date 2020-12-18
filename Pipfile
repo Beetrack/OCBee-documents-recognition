@@ -1,0 +1,22 @@
+[[source]]
+name = "pypi"
+url = "https://pypi.org/simple"
+verify_ssl = true
+
+[dev-packages]
+pylint = "*"
+autopep8 = "*"
+
+[packages]
+opencv-python = "*"
+pytesseract = "*"
+strsimpy = "*"
+pytest = "*"
+pytest-cov = "*"
+werkzeug = "*"
+install = "*"
+flask-api = "*"
+flask = "*"
+
+[requires]
+python_version = "3.8"
