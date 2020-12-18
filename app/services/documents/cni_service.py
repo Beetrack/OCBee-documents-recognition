@@ -70,23 +70,30 @@ class CNIService(BaseDocumentService):
             dict: dictionary of generated associations of fields (i.e.: {field: information})
         """
         association = {txt: None for txt in self.TO_FIND}
+        try:
 
-        for finding in self.TO_FIND.keys():
-            for j, text in enumerate(text_list):
-                if self._valid_similarity(finding, text, threshold=threshold):
-                    # APELLIDOS are generally in two separate lines so we have to
-                    # concatenate them into a single string by looking into the next
-                    # element in the list
-                    if finding == 'APELLIDOS':
-                        association['APELLIDOS'] = text_list[j+1] + ' ' + text_list[j+2]
-                    else:
-                        association[finding] = text_list[j + self.TO_FIND[finding]]
-                # RUN is normally in the same string instead of a different one, so we
-                # have to apply regex to know if the text has the pattern of a RUN
-                elif re.match(self.PATTERNS['run'], text):
-                    association['RUN'] = text
+            for finding in self.TO_FIND.keys():
+                for j, text in enumerate(text_list):
+                    if self._valid_similarity(finding, text, threshold=threshold):
+                        # APELLIDOS are generally in two separate lines so we have to
+                        # concatenate them into a single string by looking into the next
+                        # element in the list
+                        if finding == 'APELLIDOS':
+                            association['APELLIDOS'] = text_list[j+1] + ' ' + text_list[j+2]
+                        else:
+                            association[finding] = text_list[j + self.TO_FIND[finding]]
+                    # RUN is normally in the same string instead of a different one, so we
+                    # have to apply regex to know if the text has the pattern of a RUN
+                    elif re.match(self.PATTERNS['run'], text):
+                        association['RUN'] = text
 
-        return association
+        except IndexError:
+            # we ignore the error and return inmediatly, which
+            # will force the next steps into invalidation as there is no
+            # match between the necessary findings
+            pass
+        finally:
+            return association
 
     def _valid_association(self, associations: dict) -> bool:
         """
