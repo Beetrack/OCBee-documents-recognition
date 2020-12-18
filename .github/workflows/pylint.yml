@@ -14,7 +14,9 @@ jobs:
       with:
         python-version: 3.8
     - name: Install tesseract
-      run: sudo apt update sudo apt install tesseract-ocr
+      run: |
+        sudo apt update 
+        sudo apt install tesseract-ocr
     - name: Install pipenv
       run: pip install pipenv
     - name: Run tests
