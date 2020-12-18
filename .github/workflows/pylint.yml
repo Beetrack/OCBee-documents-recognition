@@ -1,4 +1,4 @@
-name: Pylint
+name: OpenCBee
 
 on: [push]
 
@@ -13,10 +13,10 @@ jobs:
       uses: actions/setup-python@v1
       with:
         python-version: 3.8
-    - name: Install dependencies
+    - name: Install pipenv
+      run: pip install pipenv
+    - name: Run tests
       run: |
-        python -m pip install --upgrade pip
-        pip install pylint
-    - name: Analysing the code with pylint
-      run: |
-        pylint app/
+        pipenv install --dev
+        pipenv run pytest
+        pipenv run pylint app/
