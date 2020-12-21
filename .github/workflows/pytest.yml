@@ -1,0 +1,39 @@
+name: OpenCBee
+
+on: [pull_request]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python 3.8
+      uses: actions/setup-python@v1
+      with:
+        python-version: 3.8
+
+    # cache dependencies to reduce latency and usage
+    - uses: actions/cache@v2
+      with:
+        path: ~/.local/share/virtualenvs
+        key: ${{ runner.os }}-pipenv-${{ hashFiles('Pipfile.lock') }}
+        restore-keys: |
+          ${{ runner.os }}-pipenv-
+
+    # install system dependency
+    - name: Install tesseract
+      run: |
+        sudo apt update 
+        sudo apt install tesseract-ocr
+
+    # install python dependencies
+    - name: Install pipenv
+      run: pip install pipenv
+
+    - name: Run tests
+      run: |
+        pipenv install --dev
+        pipenv run python setup.py develop
+        pipenv run pytest
