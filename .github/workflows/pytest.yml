@@ -30,10 +30,15 @@ jobs:
 
     # install python dependencies
     - name: Install pipenv
-      run: pip install pipenv
+      run: |
+        pip install pipenv
+        pipenv install --dev
+
+    - name: Configure imports
+      run: pipenv run python setup.py develop
 
     - name: Run tests
-      run: |
-        pipenv install --dev
-        pipenv run python setup.py develop
-        pipenv run pytest
+      run: pipenv run pytest
+
+    - name: Run linter
+      run: pipenv run pylint app/
