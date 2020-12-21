@@ -1,7 +1,7 @@
 import json
 import pytest
 from app.settings.settings import config
-from app.tests.api.test_app_constants import RUN_INTERPRETATION, RUN_DICT
+from app.tests.api.test_app_constants import RUN_DICT
 from app.api.app import app
 
 
