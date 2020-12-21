@@ -1,3 +1,6 @@
+"""
+Base Service to inherit from while parsing documents
+"""
 # standard library imports
 import re
 from strsimpy.normalized_levenshtein import NormalizedLevenshtein
@@ -21,6 +24,8 @@ class BaseDocumentService:
     # corresponding assumptions
     TO_FIND = {}
 
+    # pylint: disable=unused-argument,no-self-use
+    # disable linting of unused argument of self and other args as they are later used by subclasses
     def cleaner(self, text: str) -> list:
         """
         Cleans the recieved text from non desired characters
@@ -95,3 +100,4 @@ class BaseDocumentService:
             associations = self._clean_processed_text(associations)
             return self._standarize_return(associations)
         return None
+    # pylint: enable=unused-argument
