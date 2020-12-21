@@ -72,6 +72,7 @@ def extract_threshold(request):
     return 0.75
 # pylint: enable=redefined-outer-name
 
+
 @app.route('/api/<string:service>', methods=['GET', 'POST'])
 def analyze_image(service):
     """
@@ -85,15 +86,14 @@ def analyze_image(service):
         result = process_image(request, service, threshold=threshold)
         # image cannot be analyzed
         if result is None:
-            result = ({'error': 'Image is not clear enough with threshold {}.'.format(threshold)},
-                      status.HTTP_415_UNSUPPORTED_MEDIA_TYPE)
+            result = (
+                {'error': 'Image is not clear enough with threshold {} or format is unsupported.'.format(threshold)},
+                status.HTTP_415_UNSUPPORTED_MEDIA_TYPE
+            )
         else:
             result = ({'data': result}, status.HTTP_200_OK)
-
-    except TypeError as error:
-        result = ({'error': str(error)}, status.HTTP_400_BAD_REQUEST)
     except KeyError as error:
         result = ({'error': str(error)}, status.HTTP_400_BAD_REQUEST)
     finally:
         # disabling of lost exception as it is being handled
-        return result # pylint: disable=lost-exception
+        return result  # pylint: disable=lost-exception
