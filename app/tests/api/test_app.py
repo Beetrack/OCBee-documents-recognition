@@ -52,3 +52,30 @@ def invalid_file():
     }
     return data
 
+
+def test_basic_endpoint_response(client, image_test):
+    response = client.post('api/basic', data=image_test)
+    # checks response
+    assert response.status_code == 200
+    # checks type
+    data = response.json['data']
+    assert type(data['interpreted']) is list
+
+
+def test_basic_endpoint_response_run(client, image_run):
+    response = client.post('api/basic', data=image_run)
+    data = response.json['data']
+    # checks response
+    assert response.status_code == 200
+    # checks interpretation
+    assert data['interpreted'] == RUN_INTERPRETATION
+
+
+
+def test_basic_endpoint_response_run_strict(client, image_run_strict):
+    # we test that threshold arg works and that as the threshold is
+    # to read perfectly, we expect not to reciecve a correct answer
+    response = client.post('api/cni', data=image_run_strict)
+    # checks response
+    assert response.status_code == 415
+
