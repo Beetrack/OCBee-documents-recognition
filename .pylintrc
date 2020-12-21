@@ -1,2 +1,10 @@
+[MASTER]
+ignore-patterns=
+    test_*,
+    settings
+
 [FORMAT]
 max-line-length=120
+
+disable=
+    no-name-in-module

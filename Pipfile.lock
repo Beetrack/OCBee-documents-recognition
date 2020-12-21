@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "ec925029f3d3350b69c21a3853f24b37d4ddc04ded600cf28767801ed75d3f18"
+            "sha256": "1725b5684196d6a7d27e54591001a83300d633102e9c81cee1972285c84250cc"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -94,14 +94,6 @@
                 "sha256:bc3af051d7d14b2ee5ef9969666def0cd1a000e121eaea580d4a313df4b37f32"
             ],
             "version": "==1.1.1"
-        },
-        "install": {
-            "hashes": [
-                "sha256:1455304a2475b6753a9b0c28243ca7d8b7d71aeea1a88e6de94034fc57d765a0",
-                "sha256:dfec614e0cc90f00659067a078bc2ec032d9f0758f3df230c073eeaffd0cefa1"
-            ],
-            "index": "pypi",
-            "version": "==1.3.4"
         },
         "itsdangerous": {
             "hashes": [
@@ -313,6 +305,14 @@
             ],
             "index": "pypi",
             "version": "==2.10.1"
+        },
+        "python-dotenv": {
+            "hashes": [
+                "sha256:0c8d1b80d1a1e91717ea7d526178e3882732420b03f08afea0406db6402e220e",
+                "sha256:587825ed60b1711daea4832cf37524dfd404325b7db5e25ebe88c495c9f807a0"
+            ],
+            "index": "pypi",
+            "version": "==0.15.0"
         },
         "strsimpy": {
             "hashes": [

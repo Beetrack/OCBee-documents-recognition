@@ -9,22 +9,29 @@ To configure the API you have to execute the following command
 python3 setup.py develop
 ```
 
+## Running
+
+To configure the API you have to execute the following command
+```sh
+python3 run.py
+```
+
 ## Testing
 
 To run the tests you have to execute the following command
 ```sh
-pytest --cov-report term-missing --cov=app tests/
+pytest --cov-report term-missing --cov=app app/tests/
 ```
 
 ## Example (C.N.I: Cedula de Identidad Nacional)
 
 ### Original picture
 
-![original picture](img/org.jpg)
+![original picture](other/img/org.jpg)
 
 ### Simple B&W
 
-![black and white](img/b&n.png)
+![black and white](other/img/b&n.png)
 
 What OpenCV interprets:
 ```
