@@ -33,12 +33,10 @@ jobs:
       run: |
         pip install pipenv
         pipenv install --dev
+        pipenv run python setup.py develop
 
-    - name: Configure imports
-      run: pipenv run python setup.py develop
-
-    - name: Run tests
+    - name: Tests
       run: pipenv run pytest
 
-    - name: Run linter
+    - name: Linting
       run: pipenv run pylint app/
