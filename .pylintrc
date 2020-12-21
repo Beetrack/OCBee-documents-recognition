@@ -5,3 +5,6 @@ ignore-patterns=
 
 [FORMAT]
 max-line-length=120
+
+disable=
+    no-name-in-module
