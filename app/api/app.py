@@ -38,7 +38,17 @@ def app_service(name):
 # we disable redefinition of outer name as pylint thinks `request` is
 # being redefined but it is really not happening
 # pylint: disable=redefined-outer-name
-def process_image(request, service_name, threshold=0.75):
+def process_image(request, service_name: str, threshold=0.75):
+    """Processes the uploaded image and returns the service result
+
+    Args:
+        request (flask): flask request
+        service_name (str): name of the requested service as indicated by settings
+        threshold (int/float): threshold to tolerate the sesarched terms
+
+    Returns:
+        dict/None: aaccording to processs
+    """
     file_path = save_file(request.files['file'])
 
     # concatenates result, passing directly what is read to the processing
@@ -51,6 +61,7 @@ def process_image(request, service_name, threshold=0.75):
 
 
 def extract_threshold(request):
+    """Simplifies the extraction from request and handles errors"""
     threshold = request.data['threshold'] if 'threshold' in request.data.keys() else None
     if threshold and threshold.isnumeric():
         return min(1.0, max(0.1, float(threshold)))
@@ -59,6 +70,9 @@ def extract_threshold(request):
 
 @app.route('/api/<string:service>', methods=['GET', 'POST'])
 def analyze_image(service):
+    """
+    API endpoint for all services of image analysis
+    """
     # allow access through any string format
     service = service.lower()
     try:
