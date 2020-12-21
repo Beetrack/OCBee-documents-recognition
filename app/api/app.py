@@ -49,14 +49,18 @@ def process_image(request, service_name: str, threshold=0.75):
     Returns:
         dict/None: aaccording to processs
     """
-    file_path = save_file(request.files['file'])
+    file = request.files['file']
+    if allowed_file(file.filename):
+        file_path = save_file(file)
 
-    # concatenates result, passing directly what is read to the processing
-    service = app_service(service_name)
-    result = service.process_text(app.config['OCV'].process(file_path), threshold=threshold)
+        # concatenates result, passing directly what is read to the processing
+        service = app_service(service_name)
+        result = service.process_text(app.config['OCV'].process(file_path), threshold=threshold)
 
-    # clean written image
-    os.remove(file_path)
+        # clean written image
+        os.remove(file_path)
+    else:
+        result = None
     return result
 
 
