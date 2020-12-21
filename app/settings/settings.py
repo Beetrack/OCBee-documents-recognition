@@ -9,7 +9,7 @@ from app.services.documents.basic_service import BasicService
 load_dotenv(dotenv_path='.env')
 
 # config file
-DEBUG = (os.getenv('DEBUG').title() == 'True')
+DEBUG = ((os.getenv('DEBUG') or 'False').title() == 'True')
 
 config = {
     'UPLOAD_FOLDER': 'app/uploads',
