@@ -1,4 +1,6 @@
-# OpenCBee 👓🐝
+[![Actions Status](https://github.com/Beetrack/documents-recognition-OpenCBee/workflows/OpenCBee/badge.svg)](https://github.com/Beetrack/documents-recognition-OpenCBee/actions)
+
+# OpenCBee 👓 🐝
 
 Flask API for text recognition of documents with [OpenCV](https://opencv.org/) and [Tesseract OCR](https://github.com/tesseract-ocr/tesseract) with [Robust Locally-Adaptive Soft Binarization](https://stackoverflow.com/a/57103789) for better performance in detecting the text.
 
