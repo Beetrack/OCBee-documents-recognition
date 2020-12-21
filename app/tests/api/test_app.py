@@ -71,6 +71,24 @@ def test_basic_endpoint_response_run(client, image_run):
     assert data['interpreted'] == RUN_INTERPRETATION
 
 
+def test_cni_endpoint_response(client, image_test):
+    # image_test is not clear enough so we expect a 415 response
+    response = client.post('api/cni', data=image_test)
+    # checks response
+    assert response.status_code == 415
+
+
+def test_cni_endpoint_response_run(client, image_run):
+    # image_run is not clear enough so we expect a 415 response
+    response = client.post('api/cni', data=image_run)
+    # checks response
+    assert response.status_code == 200
+    # checks type
+    data = response.json['data']
+    assert type(data) is dict
+    # checks content
+    assert data == RUN_DICT
+
 
 def test_basic_endpoint_response_run_strict(client, image_run_strict):
     # we test that threshold arg works and that as the threshold is
@@ -79,3 +97,17 @@ def test_basic_endpoint_response_run_strict(client, image_run_strict):
     # checks response
     assert response.status_code == 415
 
+
+def test_invalid_file(client, invalid_file):
+    # we test that threshold arg works and that as the threshold is
+    # to read perfectly, we expect not to reciecve a correct answer
+    response = client.post('api/cni', data=invalid_file)
+    # checks response
+    assert response.status_code == 415
+
+
+def test_invalid_service_name(client, image_test):
+    # use of unexisting url and its corresponding method
+    response = client.post('api/DoesNotAndWillNotExist', data=image_test)
+    # checks response
+    assert response.status_code == 400
