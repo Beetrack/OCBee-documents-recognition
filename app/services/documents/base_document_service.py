@@ -1,3 +1,6 @@
+"""
+Base Service to inherit from while parsing documents
+"""
 # standard library imports
 import re
 from strsimpy.normalized_levenshtein import NormalizedLevenshtein
@@ -57,6 +60,10 @@ class BaseDocumentService:
         """Specific for each document reading implementation"""
         return dict()
 
+    def _standarize_return(self, associations: dict) -> dict:
+        """Standarizes to lowercase the return keys"""
+        return {key.lower().replace(' ', '_'): value for key, value in associations.items()}
+
     def valid_text(self, text: str, threshold=0.75) -> bool:
         """
         Validates that a text has the specific document format and all the associations specified according
@@ -88,5 +95,6 @@ class BaseDocumentService:
         text_lines = self.cleaner(text)
         associations = self._associate(text_lines, threshold=threshold)
         if self._valid_association(associations):
-            return self._clean_processed_text(associations)
+            associations = self._clean_processed_text(associations)
+            return self._standarize_return(associations)
         return None

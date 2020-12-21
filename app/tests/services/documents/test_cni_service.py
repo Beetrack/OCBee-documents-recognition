@@ -45,15 +45,15 @@ def test_process_text_valid_return_type(test_input, expected):
 @pytest.mark.parametrize(
     "test_input,expected",
     [
-        *zip(valid_run, [['RUN',
-                          'APELLIDOS',
-                          'NOMBRES',
-                          'NACIONALIDAD',
-                          'SEXO',
-                          'FECHA DE NACIMIENTO',
-                          'NUMERO DOCUMENTO',
-                          'FECHA DE EMISION',
-                          'FECHA DE VENCIMIENTO']] * len(valid_run))
+        *zip(valid_run, [['run',
+                          'apellidos',
+                          'nombres',
+                          'nacionalidad',
+                          'sexo',
+                          'fecha_de_nacimiento',
+                          'numero_documento',
+                          'fecha_de_emision',
+                          'fecha_de_vencimiento']] * len(valid_run))
     ]
 )
 def test_process_text_field_names(test_input, expected):
