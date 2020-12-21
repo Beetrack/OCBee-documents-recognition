@@ -67,8 +67,6 @@ def test_basic_endpoint_response_run(client, image_run):
     data = response.json['data']
     # checks response
     assert response.status_code == 200
-    # checks interpretation
-    assert data['interpreted'] == RUN_INTERPRETATION
 
 
 def test_cni_endpoint_response(client, image_test):
