@@ -38,6 +38,8 @@ def app_service(name):
 # we disable redefinition of outer name as pylint thinks `request` is
 # being redefined but it is really not happening
 # pylint: disable=redefined-outer-name
+
+
 def process_image(request, service_name: str, threshold=0.75):
     """Processes the uploaded image and returns the service result
 
