@@ -1,3 +1,6 @@
+"""
+Base Service to inherit from while parsing documents
+"""
 # standard library imports
 import re
 from strsimpy.normalized_levenshtein import NormalizedLevenshtein

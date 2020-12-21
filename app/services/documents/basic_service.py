@@ -1,3 +1,6 @@
+"""
+Basic Service module that returns all the read information in a clean format
+"""
 from app.services.documents.base_document_service import BaseDocumentService
 
 
