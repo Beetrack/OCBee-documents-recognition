@@ -1,5 +1,7 @@
 [MASTER]
-ignore-patterns=test_*
+ignore-patterns=
+    test_*,
+    settings
 
 [FORMAT]
 max-line-length=120
