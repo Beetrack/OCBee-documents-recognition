@@ -71,7 +71,7 @@ a
 
 ### Adaptive binarization
 
-![black and white](img/proc.png)
+![black and white](other/img/proc.png)
 
 What OpenCV interprets:
 ```
